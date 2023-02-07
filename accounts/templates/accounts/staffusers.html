@@ -1,0 +1,121 @@
+{% extends 'dashboard2.html' %}
+{% load widget_tweaks %}
+
+{% block dashboard_content %}
+
+{% block script %}
+    {% if user_modal_open %}
+    <script type="text/javascript">
+        window.onload = () => {
+                $('#addUserModal').modal('show');
+            }
+    </script>
+    {% endif %}
+    {% if user_detail_modal_open %}
+    <script type="text/javascript">
+        window.onload = () => {
+                $('#staffDetailsModal').modal('show');
+            }
+    </script>
+    {% endif %}
+{% endblock %}
+
+{% include 'accounts/add_user_modal.html' %}
+
+{% if staff_member %}
+
+{% include 'accounts/staff_user_modal.html' %}
+
+{% endif %}
+
+<!-- <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 131">
+  <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="..." class="rounded me-2" alt="...">
+      <strong class="me-auto">Bootstrap</strong>
+      <small>11 mins ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Hello, world! This is a toast message.
+    </div>
+  </div>
+</div> -->
+
+<div class="toast align-items-center text-white bg-primary border-0 show position-fixed bottom-0 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        Hello, world! This is a toast message.
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+</div>
+
+  
+<div class="card d-flex flex-fill">
+    <div class="card-header d-flex align-items-center justify-content-between bg-white">
+        <h3 class=" card-title">Staff members</h3>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <svg class="me-1" width="24" height="24"><use xlink:href="#plus"/></svg>
+            <span>Add User</span>
+        </button>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                    <tr>
+                        <th></th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Designation</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for staff in staff_members %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{staff.user.first_name}}</td>
+                        <td>{{staff.user.last_name}}</td>
+                        <td>{{staff.get_designation_display}}</td>
+                        <td>
+                            {% if staff.user.is_active %}
+                            <span class="badge rounded-pill bg-success">Active</span>
+                            {% else %}
+                            <span class="badge rounded-pill bg-danger">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="dropstart">
+                                <button class="btn dropdown-toggle-none d-flex align-items-center" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <svg width="24" height="24"><use xlink:href="#more"/></svg>
+                                    <span class="visually-hidden">Actions</span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center" href="{% url 'staff_details' staff.id %}">
+                                            <svg class="me-2" width="16" height="16"><use xlink:href="#pencil-square"/></svg>
+                                            <span>Edit details</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="alert alert-info m-0" role="alert">
+                                No staff record yet.
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

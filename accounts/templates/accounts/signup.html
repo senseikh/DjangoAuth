@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container p-2">
+    {% include 'userform.html' %}
+    <a href="{% url 'signin' %}">Have an account? Sign in</a>
+</div>
+{% endblock %}

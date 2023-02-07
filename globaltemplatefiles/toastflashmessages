@@ -1,0 +1,51 @@
+{% if messages %}
+    <ul class="d-flex flex-column align-items-center p-0">
+        {% for message in messages %}
+            {% if message.tags == "info" %}
+            <li>
+                <div class="toast align-items-center text-white bg-info border-0 show position-fixed top-0 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                      <div class="toast-body">
+                        {{ message }}
+                      </div>
+                      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </li>
+            {% elif message.tags == "success" %}
+            <li>
+                <div class="toast align-items-center text-white bg-success border-0 show position-fixed top-0 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                      <div class="toast-body">
+                        {{ message }}
+                      </div>
+                      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </li>
+            {% elif message.tags == "warning" %}
+            <li>
+                <div class="toast align-items-center text-white bg-warning border-0 show position-fixed top-0 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                      <div class="toast-body">
+                        {{ message }}
+                      </div>
+                      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </li>
+            {% elif message.tags == "error" %}
+            <li>
+                <div class="toast align-items-center text-white bg-danger border-0 show position-fixed top-0 end-0 p-3" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                      <div class="toast-body">
+                        {{ message }}
+                      </div>
+                      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

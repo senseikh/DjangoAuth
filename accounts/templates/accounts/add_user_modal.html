@@ -1,0 +1,45 @@
+{% load widget_tweaks %}
+<div class="modal fade" id="addUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <form class="modal-content" action="{% url 'staff_members' %}" autocomplete="off" method="post">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserModalLabel">Add user</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body row">    
+            <div class="col-12">
+                {% if add_user_form.non_field_errors %}
+                    {% for error in add_user_form.non_field_errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{error}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            {% with WIDGET_ERROR_CLASS='is-invalid' %}
+                {% for field in add_user_form %}
+                <div class="{% if forloop.counter0 == 0 or forloop.counter0 == 1 %}col-sm-6{% else %}col-12{% endif %} {% if forloop.counter0 == 0 %}pe-sm-2{% endif %}">
+                    {{ field.help_text }}
+                    {% for error in field.errors %}
+                    <p class="text-danger mb-1">{{error}}</p>
+                    {% endfor %}
+                    <div class="form-floating mb-3">
+                    {% render_field field class+="form-control" id=field.name placeholder=field.name|capfirst %}
+                    <label for="{{ field.name }}">{{ field.label_tag }}</label>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endwith %}
+        </div>
+        <div class="modal-footer d-flex">
+            <div class="d-flex w-100">
+                <button type="button" class="btn btn-outline-danger w-100 me-2" data-bs-dismiss="modal">Cancel</button>
+                <input type="submit" value="Submit" class="btn btn-primary w-100">
+            </div>
+        </div>
+      </form>
+    </div>
+</div>

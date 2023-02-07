@@ -1,0 +1,121 @@
+{% load widget_tweaks %}
+
+<div class="modal fade" id="activateUserModal" tabindex="-1" aria-labelledby="activateUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="activateUserModalLabel">Warning</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            {% if staff_member.user.is_active %}
+            <p>Are you sure to deactivate this user? User will not be able to log in.</p>
+            {% else %}
+            <p>Are you sure to activate this user?</p>
+            {% endif %}
+        </div>
+        <div class="modal-footer">
+            <a href="{% url 'staff_details' staff_member.id %}" type="button" class="btn btn-secondary">Close</a>
+            {% if staff_member.user.is_active %}
+            <a href="{% url 'deactivate_staff' staff_member.id %}" type="button" class="btn btn-danger">Confirm</a>
+            {% else %}
+            <a href="{% url 'activate_staff' staff_member.id %}" type="button" class="btn btn-danger">Confirm</a>
+            {% endif %}
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="deleteUserModalLabel">Warning</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure to delete this user?</p>
+        </div>
+        <div class="modal-footer">
+            <a href="{% url 'staff_details' staff_member.id %}" type="button" class="btn btn-secondary">Close</a>
+            <a href="{% url 'delete_staff' staff_member.id %}" type="button" class="btn btn-danger">Confirm</a>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="staffDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staffDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <form class="modal-content" action="{% url 'staff_details' staff_member.id %}" method="post">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="staffDetailsModalLabel">User details</h5>
+                <div class="dropstart">
+                    <button class="btn dropdown-toggle-none d-flex align-items-center" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg width="24" height="24"><use xlink:href="#more"/></svg>
+                        <span class="visually-hidden">Actions</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>
+                            <!-- <a class="dropdown-item d-flex align-items-center" href="">
+                                <svg class="me-2" width="16" height="16"><use xlink:href="#pencil-square"/></svg>
+                                <span>Edit details</span>
+                            </a> -->
+                            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#activateUserModal">
+                                <svg class="me-2 text-danger" width="16" height="16"><use xlink:href="#pencil-square"/></svg>
+                                <span>
+                                    {% if staff_member.user.is_active %}
+                                    Deactivate user
+                                    {% else %}
+                                    Activate user
+                                    {% endif %}
+                                </span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+                                <svg class="me-2 text-danger" width="16" height="16"><use xlink:href="#trash-bin"/></svg>
+                                <span>
+                                    Delete user
+                                </span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-body row">    
+                <div class="col-12">
+                    {% if staff_details_form.non_field_errors %}
+                        {% for error in staff_details_form.non_field_errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{error}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                {% with WIDGET_ERROR_CLASS='is-invalid' %}
+                    {% for field in staff_details_form %}
+                    <div class="{% if forloop.counter0 == 0 or forloop.counter0 == 1 %}col-sm-6{% else %}col-12{% endif %} {% if forloop.counter0 == 0 %}pe-sm-2{% endif %}">
+                        {{ field.help_text }}
+                        {% for error in field.errors %}
+                        <p class="text-danger mb-1">{{error}}</p>
+                        {% endfor %}
+                        <div class="form-floating mb-3">
+                        {% render_field field class+="form-control" id=field.name placeholder=field.name|capfirst %}
+                        <label for="{{ field.name }}">{{ field.label_tag }}</label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endwith %}
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex w-100">
+                    <a href="{% url 'staff_members' %}" class="btn btn-outline-danger me-2 w-100">Cancel</a>
+                    <input type="submit" value="Confirm" class="btn btn-primary w-100">
+                </div>
+            </div>
+      </form>
+    </div>
+</div>

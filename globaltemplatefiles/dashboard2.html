@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Sidebar</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      {% include 'nav.html' %}
+    </div>
+</div>
+
+<div class="d-flex flex-row vh-100">
+
+    {% include 'sideminibar.html' %}
+
+    <div class="d-none d-lg-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+        <h2>Sidebar</h2>
+        {% include 'nav.html' %}
+    </div>
+    
+    <div class="flex-fill" style="overflow-y: auto;" >
+        <header class="d-flex align-items-center border-bottom py-2 py-lg-3">
+            <button class="btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                <svg class="bi" width="32" height="32"><use xlink:href="#menu"/></svg>
+                <span class="visually-hidden">Icon-only</span>
+            </button>
+            <h3 class="m-0 ps-lg-3">
+                Heading
+            </h3>
+            <div class="dropdown text-end ms-auto me-3">
+                <a href="#" class="d-block text-primary text-decoration-none" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                  <svg class="bi d-block mx-auto" width="28" height="28"><use xlink:href="#people-circle"/></svg>
+                  <!-- <span class="d-none d-sm-inline-block text-black mt-1">Account</span> -->
+                  <span class="visually-hidden">Account</span>
+                </a>
+                <ul class="dropdown-menu text-small" aria-labelledby="dropdownMenu">
+                  {% if user.is_authenticated %}
+                  <li>
+                    <a href="{% url 'user_profile' user.username %}" class="nav-link link-dark">
+                      <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+                      Profile
+                    </a>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <a href="{% url 'logout' %}" class="nav-link link-dark">
+                      <svg class="bi me-2" width="16" height="16"><use xlink:href="#sign-out"/></svg>
+                      Sign out
+                    </a>
+                  </li>
+                  {% else %}
+                  <li>
+                    <a href="{% url 'signin' %}" class="nav-link link-dark">
+                      <svg class="bi me-2" width="16" height="16"><use xlink:href="#sign-out"/></svg>
+                      Sign in
+                    </a>
+                  </li>
+                  {% endif %}
+                </ul>
+            </div>
+        </header>
+        <div class="p-3 overflow-auto flex-fill">
+            {% block dashboard_content %}
+            {% endblock %}
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      {% include 'nav.html' %}
+    </div>
+</div>
+
+<!-- {% include 'toastflashmessages.html' %}
+{% include 'alertflashmessages.html' %} -->
+
+<ul class="w-100 d-flex flex-column align-items-center p-0">
+    {% for message in messages %}
+        {% if message.tags == "info" %}
+        <div class="alert alert-info alert-dismissible fade show w-100" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% elif message.tags == "success" %}
+        <div class="alert alert-success alert-dismissible fade show w-100" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% elif message.tags == "warning" %}
+        <div class="alert alert-warning alert-dismissible fade show w-100" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% elif message.tags == "error" %}
+        <div class="alert alert-danger alert-dismissible fade show w-100" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+    {% endfor %}
+</ul>
+<div class="d-flex flex-row  vh-100">
+    <div class="d-none d-md-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+        <h2>Sidebar</h2>
+        {% include 'nav.html' %}
+    </div>
+    
+    <div class="flex-fill" style="overflow-y: auto;" >
+        <header class="d-flex align-items-center border-bottom py-2 py-md-3">
+            <button class="btn d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                <svg class="bi" width="32" height="32"><use xlink:href="#menu"/></svg>
+                <span class="visually-hidden">Icon-only</span>
+            </button>
+            <h3 class="m-0 ps-md-3">
+                Heading
+            </h3>
+        </header>
+        <div class="p-3 overflow-auto">
+            {% block dashboard_content %}
+            {% endblock %}
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

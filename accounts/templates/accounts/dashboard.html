@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container p-2">
+    <h1>dashboard</h1>
+    <p><a href="{% url 'logout' %}">Log out</a></p>
+    <p><a href="{% url 'password_change' %}">Change password</a></p>
+</div>
+{% endblock %}
